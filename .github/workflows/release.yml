@@ -1,0 +1,53 @@
+name: Release NexusMark
+
+on:
+  push:
+    tags:
+      - 'v*'   # triggers on tags like v1.1.0, v2.0.0 etc.
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create extension zip
+        run: |
+          zip -r nexusmark-${{ steps.version.outputs.VERSION }}.zip \
+            manifest.json \
+            background.js \
+            popup/ \
+            library/ \
+            utils/ \
+            icons/ \
+            --exclude "*.DS_Store" \
+            --exclude "*/.gitkeep"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: NexusMark ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## NexusMark ${{ steps.version.outputs.VERSION }}
+
+            ### 🚀 Install Instructions
+            1. Download `nexusmark-${{ steps.version.outputs.VERSION }}.zip` below
+            2. Unzip the file
+            3. Open Chrome → go to `chrome://extensions`
+            4. Enable **Developer Mode** (top-right toggle)
+            5. Click **Load unpacked** → select the unzipped folder
+            6. Done! Pin NexusMark to your toolbar 📌
+
+            ### 📋 What's new
+            _Add your changelog here or link to CHANGELOG.md_
+          files: nexusmark-${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
