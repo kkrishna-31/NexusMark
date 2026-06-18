@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NexusMark</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="home-mode">
+
+  <div id="header">
+    <div id="brand">NEX<span>US</span>MARK</div>
+    <div id="header-tag">v1.1</div>
+  </div>
+
+  <!-- Scanner line animation -->
+  <div id="scanner-line"></div>
+
+  <!-- Hero / status zone -->
+  <div id="hero-zone">
+    <div id="hero-icon">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect x="2" y="2" width="32" height="32" rx="2" stroke="#1a4060" stroke-width="1"/>
+        <rect x="6" y="6" width="24" height="16" rx="1" fill="#0d1520" stroke="#1a3050" stroke-width="0.8"/>
+        <circle cx="18" cy="14" r="4" fill="none" stroke="#4a9eff" stroke-width="1.2"/>
+        <circle cx="18" cy="14" r="1.5" fill="#4a9eff"/>
+        <line x1="6" y1="26" x2="12" y2="26" stroke="#1a4060" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="26" x2="22" y2="26" stroke="#1a3050" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="24" y1="26" x2="30" y2="26" stroke="#1a2540" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div id="hero-label">SCREEN CAPTURE</div>
+    <div id="hotkey-badge" title="Click to change shortcut">
+      <span id="hotkey-icon">⌨</span>
+      <span id="hotkey-display">Ctrl+Shift+S</span>
+      <span id="hotkey-edit-hint">CHANGE</span>
+    </div>
+  </div>
+
+  <!-- Action grid -->
+  <div id="action-grid">
+
+    <button class="action-tile primary" id="btn-capture">
+      <span class="tile-icon">⊕</span>
+      <span class="tile-label">CAPTURE NOW</span>
+      <span class="tile-sub">manual screenshot</span>
+    </button>
+
+    <button class="action-tile" id="btn-hotkey">
+      <span class="tile-icon">⌨</span>
+      <span class="tile-label">SET HOTKEY</span>
+      <span class="tile-sub">customize shortcut</span>
+    </button>
+
+    <button class="action-tile" id="btn-folder">
+      <span class="tile-icon">⊞</span>
+      <span class="tile-label">SAVE FOLDER</span>
+      <span class="tile-sub" id="folder-sub">default downloads</span>
+    </button>
+
+    <button class="action-tile" id="btn-library">
+      <span class="tile-icon">▤</span>
+      <span class="tile-label">OPEN LIBRARY</span>
+      <span class="tile-sub" id="library-count-sub">loading...</span>
+    </button>
+
+  </div>
+
+  <!-- Folder picker overlay -->
+  <div id="folder-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-header">
+        <span class="overlay-title">SAVE FOLDER</span>
+        <button class="overlay-close" id="folder-close">✕</button>
+      </div>
+      <div class="overlay-body">
+        <label class="field-label">SUBFOLDER NAME</label>
+        <input id="folder-input" type="text" placeholder="e.g. nexusmark / screenshots">
+        <p class="overlay-hint">Files will be saved inside this subfolder within your browser's Downloads directory.</p>
+        <div class="overlay-actions">
+          <button class="btn-secondary" id="folder-reset">RESET</button>
+          <button class="btn-primary" id="folder-save">SAVE ▸</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="statusbar-home">
+    <div id="status-dot-home"></div>
+    <span id="status-text-home">READY</span>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

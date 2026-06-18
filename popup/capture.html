@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NexusMark — Capture</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <div id="header">
+    <div id="brand">NEX<span>US</span>MARK</div>
+    <div id="header-actions">
+      <button id="open-library-btn">LIBRARY ▸</button>
+    </div>
+  </div>
+
+  <div id="screenshot-zone">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <img id="screenshot-preview" alt="Captured screenshot">
+  </div>
+
+  <div id="popup-body">
+
+    <div id="meta-row">
+      <span id="page-url"></span>
+      <span id="timestamp"></span>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="page-title">PAGE TITLE</label>
+      <input id="page-title" type="text" placeholder="Edit title...">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="note-input">YOUR NOTE</label>
+      <textarea id="note-input" placeholder="Why are you saving this?"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="tags-input">TAGS</label>
+      <input id="tags-input" type="text" placeholder="ict, gold, fvg, dsa...">
+    </div>
+
+  </div>
+
+  <div id="btn-row">
+    <button id="cancel-btn">DISCARD</button>
+    <button id="save-btn">SAVE ENTRY ▸</button>
+  </div>
+
+  <script type="module" src="capture.js"></script>
+</body>
+</html>

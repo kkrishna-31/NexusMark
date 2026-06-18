@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NexusMark — Library</title>
+  <link rel="stylesheet" href="library.css">
+</head>
+<body>
+
+  <div id="topbar">
+    <div id="lib-brand">NEX<span>US</span>MARK</div>
+    <div id="search-wrap">
+      <span id="search-icon">⌕</span>
+      <input id="search-input" type="text" placeholder="Search entries...">
+    </div>
+    <div id="entry-count">0 SAVED</div>
+  </div>
+
+  <div id="main">
+
+    <div id="empty-state">
+      <p>// NO ENTRIES FOUND</p>
+      <p>Press Ctrl+Shift+S on any page to capture your first entry.</p>
+    </div>
+
+    <div id="entries-grid"></div>
+
+  </div>
+
+  <div id="statusbar">
+    <span id="status-text">NEXUSMARK v1.1 · LOCAL STORAGE</span>
+    <div id="status-dot"></div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div id="preview-modal" class="hidden">
+    <div id="preview-backdrop"></div>
+    <div id="preview-panel">
+      <div id="preview-topbar">
+        <div id="preview-meta">
+          <span id="preview-title-text"></span>
+          <span id="preview-url-text"></span>
+        </div>
+        <div id="preview-actions">
+          <button id="preview-visit">VISIT ▸</button>
+          <button id="preview-close">✕ CLOSE</button>
+        </div>
+      </div>
+      <div id="preview-img-wrap">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+        <img id="preview-img" alt="Screenshot preview">
+      </div>
+      <div id="preview-footer">
+        <span id="preview-ts"></span>
+        <div id="preview-tags-wrap"></div>
+        <span id="preview-note-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <template id="entry-card-template">
+    <div class="nx-card">
+      <div class="card-thumb">
+        <img class="card-screenshot" alt="Saved screenshot">
+        <div class="thumb-overlay">
+          <span class="thumb-preview-hint">⊕ PREVIEW</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-title"></div>
+        <div class="card-url"></div>
+        <div class="card-ts"></div>
+        <div class="card-note"></div>
+        <div class="card-tags"></div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-visit">VISIT ▸</button>
+        <button class="btn-delete">DEL</button>
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="library.js"></script>
+</body>
+</html>
