@@ -7,7 +7,7 @@
 **A minimal, keyboard-first Chrome extension for capturing and annotating webpage screenshots.**
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-4a9eff?style=flat-square&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
-[![Version](https://img.shields.io/badge/version-1.1.0-cba6f7?style=flat-square)](https://github.com/yourusername/nexusmark/releases)
+[![Version](https://img.shields.io/badge/version-1.1.0-cba6f7?style=flat-square)](https://github.com/kkrishna-31/nexusmark/releases)
 [![License](https://img.shields.io/badge/license-MIT-a6e3a1?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f9e2af?style=flat-square)](CONTRIBUTING.md)
 
@@ -55,7 +55,7 @@ To change the shortcut: open the extension popup → click **SET HOTKEY**, or go
 
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/yourusername/nexusmark.git
+   git clone https://github.com/kkrishna-31/nexusmark.git
    ```
 
 2. Open Chrome and navigate to:
