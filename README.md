@@ -49,6 +49,11 @@ To change the shortcut: open the extension popup → click **SET HOTKEY**, or go
 
 ---
 
+## ⬇️ Direct Download
+
+[Download NexusMark v1.1](https://github.com/kkrishna-31/NexusMark/releases/download/v1.1.0/Nexusmark-v1.1.zip)
+
+
 ## 🚀 Installation
 
 ### From source (Developer Mode)
