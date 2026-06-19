@@ -51,7 +51,7 @@ To change the shortcut: open the extension popup → click **SET HOTKEY**, or go
 
 ## ⬇️ Direct Download
 
-<a href="https://github.com/kkrishna-31/NexusMark/releases/latest/download/nexusmark-v1.1.0.zip">
+<a href="https://github.com/kkrishna-31/NexusMark/releases/latest/download">
   <img src="https://img.shields.io/badge/Download-NexusMark%20v1.1.0-cba6f7?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Download NexusMark">
 </a>
 
