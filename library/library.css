@@ -40,7 +40,7 @@ html, body {
   background: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
 }
 
@@ -133,6 +133,32 @@ html, body {
   text-transform: uppercase;
 }
 
+/* ── Recycle Bin Button (topbar) ── */
+
+#recycle-btn {
+  background: rgba(243,139,168,0.08);
+  border: 1px solid rgba(243,139,168,0.3);
+  color: var(--accent-red);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+#recycle-btn:hover { background: rgba(243,139,168,0.16); border-color: var(--accent-red); }
+
+#recycle-count {
+  background: var(--accent-red);
+  color: var(--bg-deep);
+  font-weight: 700;
+  padding: 1px 6px;
+  margin-left: 4px;
+  border-radius: 2px;
+}
+
 /* ════════════════════════════════════════
    MAIN / GRID
 ════════════════════════════════════════ */
@@ -208,7 +234,7 @@ html, body {
 /* ── Thumbnail ── */
 
 .card-thumb {
-  height: 160px;       /* was 110px — bigger preview */
+  height: 160px;
   overflow: hidden;
   background: var(--bg-deep);
   border-bottom: 1px solid var(--border-dim);
@@ -268,7 +294,7 @@ html, body {
 .card-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);    /* bright white — very readable */
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -277,8 +303,8 @@ html, body {
 
 .card-url {
   font-family: var(--mono);
-  font-size: 11px;
-  color: var(--accent-blue);     /* blue URL — like a real browser */
+  font-size: 12px;
+  color: var(--accent-blue);
   letter-spacing: 0.03em;
   white-space: nowrap;
   overflow: hidden;
@@ -287,13 +313,13 @@ html, body {
 
 .card-ts {
   font-family: var(--mono);
-  font-size: 10px;
-  color: var(--accent-teal);     /* teal timestamp — stands out clearly */
+  font-size: 11px;
+  color: var(--accent-teal);
   letter-spacing: 0.08em;
 }
 
 .card-note {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   line-height: 1.6;
   display: -webkit-box;
@@ -316,9 +342,9 @@ html, body {
 
 .tag-pill {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.1em;
-  color: var(--accent-yellow);   /* yellow tags — like code editor labels */
+  color: var(--accent-yellow);
   background: rgba(249,226,175,0.08);
   border: 1px solid rgba(249,226,175,0.2);
   padding: 3px 9px;
@@ -341,7 +367,7 @@ html, body {
   border: 1px solid rgba(137,180,250,0.3);
   color: var(--accent-blue);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   padding: 7px;
   cursor: pointer;
@@ -357,10 +383,10 @@ html, body {
 
 .btn-delete {
   background: transparent;
-  border: 1px solid rgba(243,139,168,0.15);
-  color: rgba(243,139,168,0.4);
+  border: 1px solid rgba(243,139,168,0.4);
+  color: rgba(243,139,168,0.75);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   padding: 7px 13px;
   cursor: pointer;
@@ -369,9 +395,9 @@ html, body {
 }
 
 .btn-delete:hover {
-  border-color: rgba(243,139,168,0.6);
+  border-color: rgba(243,139,168,0.7);
   color: var(--accent-red);
-  background: rgba(243,139,168,0.06);
+  background: rgba(243,139,168,0.08);
 }
 
 /* ════════════════════════════════════════
@@ -391,7 +417,7 @@ html, body {
 
 #status-text {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--text-subtle);
   text-transform: uppercase;
@@ -578,7 +604,7 @@ body { padding-bottom: 40px; }
 }
 
 #preview-note-text {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   font-style: italic;
   width: 100%;
@@ -586,3 +612,159 @@ body { padding-bottom: 40px; }
 }
 
 #preview-note-text:empty { display: none; }
+
+/* ════════════════════════════════════════
+   RECYCLE BIN MODAL
+════════════════════════════════════════ */
+
+#recycle-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+#recycle-modal.hidden { display: none; }
+
+#recycle-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14,14,24,0.94);
+  backdrop-filter: blur(6px);
+}
+
+#recycle-panel {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid rgba(243,139,168,0.35);
+  max-width: 640px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+#recycle-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border-dim);
+}
+
+#recycle-title-text {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--accent-red);
+}
+
+#recycle-actions { display: flex; gap: 8px; }
+
+#empty-recycle-btn, #recycle-close {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 7px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  color: var(--text-subtle);
+  transition: border-color 0.15s, color 0.15s;
+}
+#empty-recycle-btn:hover { border-color: var(--accent-red); color: var(--accent-red); }
+#recycle-close:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+#recycle-list {
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recycle-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  padding: 8px 12px;
+}
+
+.recycle-thumb {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border: 1px solid var(--border-dim);
+  flex-shrink: 0;
+}
+
+.recycle-info { flex: 1; overflow: hidden; }
+
+.recycle-item-title {
+  font-size: 13px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recycle-item-deleted-ts {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-subtle);
+  margin-top: 2px;
+}
+
+.recycle-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.btn-restore {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: rgba(166,227,161,0.1);
+  border: 1px solid rgba(166,227,161,0.4);
+  color: var(--accent-green);
+  transition: background 0.15s;
+}
+.btn-restore:hover { background: rgba(166,227,161,0.2); }
+
+.btn-purge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(243,139,168,0.4);
+  color: rgba(243,139,168,0.8);
+  transition: background 0.15s, color 0.15s;
+}
+.btn-purge:hover { background: rgba(243,139,168,0.15); color: var(--accent-red); }
+
+#recycle-empty-state {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+}
+#recycle-empty-state.visible { display: block; }
+#recycle-empty-state p {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}

@@ -13,6 +13,7 @@
       <span id="search-icon">⌕</span>
       <input id="search-input" type="text" placeholder="Search entries...">
     </div>
+    <button id="recycle-btn">🗑 RECYCLE <span id="recycle-count">0</span></button>
     <div id="entry-count">0 SAVED</div>
   </div>
 
@@ -28,7 +29,7 @@
   </div>
 
   <div id="statusbar">
-    <span id="status-text">NEXUSMARK v1.1 · LOCAL STORAGE</span>
+    <span id="status-text">NEXUSMARK v1.2 · LOCAL STORAGE</span>
     <div id="status-dot"></div>
   </div>
 
@@ -61,6 +62,24 @@
     </div>
   </div>
 
+  <!-- Recycle Bin Modal -->
+  <div id="recycle-modal" class="hidden">
+    <div id="recycle-backdrop"></div>
+    <div id="recycle-panel">
+      <div id="recycle-topbar">
+        <span id="recycle-title-text">RECYCLE BIN</span>
+        <div id="recycle-actions">
+          <button id="empty-recycle-btn">EMPTY BIN</button>
+          <button id="recycle-close">✕ CLOSE</button>
+        </div>
+      </div>
+      <div id="recycle-list"></div>
+      <div id="recycle-empty-state">
+        <p>// RECYCLE BIN EMPTY</p>
+      </div>
+    </div>
+  </div>
+
   <template id="entry-card-template">
     <div class="nx-card">
       <div class="card-thumb">
@@ -79,6 +98,20 @@
       <div class="card-footer">
         <button class="btn-visit">VISIT ▸</button>
         <button class="btn-delete">DEL</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="recycle-item-template">
+    <div class="recycle-item">
+      <img class="recycle-thumb" alt="Deleted screenshot">
+      <div class="recycle-info">
+        <div class="recycle-item-title"></div>
+        <div class="recycle-item-deleted-ts"></div>
+      </div>
+      <div class="recycle-item-actions">
+        <button class="btn-restore">RESTORE</button>
+        <button class="btn-purge">DELETE FOREVER</button>
       </div>
     </div>
   </template>

@@ -355,7 +355,18 @@ html, body {
   display: flex;
   gap: 8px;
   margin-top: 4px;
+  flex-wrap: wrap;
 }
+
+.overlay-picked-path {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+.overlay-picked-path:empty { display: none; }
 
 .btn-primary, .btn-secondary {
   font-family: var(--mono);

@@ -1,5 +1,6 @@
 import { getAllEntries } from '../utils/storage.js';
 import { captureTab } from '../utils/capture.js';
+import { pickFolder, getStoredFolder, clearStoredFolder } from '../utils/fsHandle.js';
 
 // ── Hotkey display ─────────────────────────────────────
 
@@ -18,7 +19,7 @@ async function loadLibraryCount() {
   sub.textContent = entries.length === 1 ? '1 entry saved' : `${entries.length} entries saved`;
 }
 
-// ── Folder preference ──────────────────────────────────
+// ── Folder preference (subfolder-under-Downloads, text input) ──
 
 async function loadFolder() {
   const data = await chrome.storage.local.get('nexusmark_folder');
@@ -32,6 +33,19 @@ async function saveFolder(value) {
   await chrome.storage.local.set({ nexusmark_folder: value });
   const sub = document.getElementById('folder-sub');
   sub.textContent = value ? value : 'default downloads';
+}
+
+// ── Picked folder (real directory handle, via Browse) ──────────
+
+async function loadPickedFolder() {
+  const handle = await getStoredFolder();
+  const pathEl = document.getElementById('folder-picked-path');
+  if (handle) {
+    pathEl.textContent = `📁 Saving to: ${handle.name}`;
+    document.getElementById('folder-sub').textContent = handle.name;
+  } else {
+    pathEl.textContent = '';
+  }
 }
 
 // ── Capture ────────────────────────────────────────────
@@ -97,8 +111,27 @@ document.getElementById('folder-save').addEventListener('click', async () => {
 document.getElementById('folder-reset').addEventListener('click', async () => {
   document.getElementById('folder-input').value = '';
   await saveFolder('');
+  await clearStoredFolder();
+  document.getElementById('folder-picked-path').textContent = '';
   document.getElementById('folder-overlay').classList.add('hidden');
   showStatus('RESET TO DEFAULT');
+});
+
+// ── Browse (real directory picker) ─────────────────────
+
+document.getElementById('folder-browse').addEventListener('click', async () => {
+  try {
+    const handle = await pickFolder();
+    document.getElementById('folder-picked-path').textContent = `📁 Saving to: ${handle.name}`;
+    document.getElementById('folder-sub').textContent = handle.name;
+    // Picking a real folder overrides the subfolder-under-Downloads text input
+    document.getElementById('folder-input').value = '';
+    await saveFolder('');
+    showStatus('FOLDER SELECTED');
+  } catch (err) {
+    // AbortError just means the user cancelled the picker — not worth surfacing
+    if (err.name !== 'AbortError') console.error('Folder pick failed:', err);
+  }
 });
 
 // ── Library ────────────────────────────────────────────
@@ -119,7 +152,7 @@ function showStatus(msg) {
 // ── Init ───────────────────────────────────────────────
 
 async function init() {
-  await Promise.all([loadHotkey(), loadLibraryCount(), loadFolder()]);
+  await Promise.all([loadHotkey(), loadLibraryCount(), loadFolder(), loadPickedFolder()]);
 }
 
 init();

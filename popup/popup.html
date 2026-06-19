@@ -9,7 +9,7 @@
 
   <div id="header">
     <div id="brand">NEX<span>US</span>MARK</div>
-    <div id="header-tag">v1.1</div>
+    <div id="header-tag">v1.2</div>
   </div>
 
   <!-- Scanner line animation -->
@@ -77,9 +77,11 @@
         <input id="folder-input" type="text" placeholder="e.g. nexusmark / screenshots">
         <p class="overlay-hint">Files will be saved inside this subfolder within your browser's Downloads directory.</p>
         <div class="overlay-actions">
+          <button class="btn-secondary" id="folder-browse">⊞ BROWSE...</button>
           <button class="btn-secondary" id="folder-reset">RESET</button>
           <button class="btn-primary" id="folder-save">SAVE ▸</button>
         </div>
+        <p class="overlay-picked-path" id="folder-picked-path"></p>
       </div>
     </div>
   </div>
