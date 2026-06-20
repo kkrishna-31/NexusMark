@@ -58,3 +58,64 @@ export async function ensurePermission(handle) {
   if ((await handle.queryPermission(opts)) === "granted") return true;
   return (await handle.requestPermission(opts)) === "granted";
 }
+
+// ── Convert a base64 data URL screenshot into a Blob ───
+
+function dataUrlToBlob(dataUrl) {
+  const [header, base64] = dataUrl.split(',');
+  const mime = header.match(/data:(.*?);base64/)[1];
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new Blob([bytes], { type: mime });
+}
+
+// ── Build a safe, collision-resistant filename ──────────
+
+function buildFilename(title, timestamp) {
+  const safeTitle = (title || 'screenshot')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+
+  const stamp = new Date(timestamp)
+    .toISOString()
+    .replace(/[:.]/g, '-')
+    .slice(0, 19);
+
+  return `${safeTitle || 'screenshot'}_${stamp}.png`;
+}
+
+// ── Write a screenshot into the picked folder ───────────
+// Best-effort: returns a result object instead of throwing,
+// so a failed disk write never blocks the library save.
+
+export async function writeScreenshotFile(dataUrl, title, timestamp) {
+  const handle = await getStoredFolder();
+  if (!handle) {
+    return { success: false, reason: 'no-folder-set' };
+  }
+
+  const granted = await ensurePermission(handle);
+  if (!granted) {
+    return { success: false, reason: 'permission-denied' };
+  }
+
+  try {
+    const blob = dataUrlToBlob(dataUrl);
+    const filename = buildFilename(title, timestamp);
+
+    const fileHandle = await handle.getFileHandle(filename, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(blob);
+    await writable.close();
+
+    return { success: true, filename };
+  } catch (err) {
+    console.error('NexusMark: failed to write screenshot to disk', err);
+    return { success: false, reason: 'write-error', error: err.message };
+  }
+}

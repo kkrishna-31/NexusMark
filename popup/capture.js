@@ -1,5 +1,6 @@
 import { saveEntry } from '../utils/storage.js';
 import { captureTab } from '../utils/capture.js';
+import { writeScreenshotFile } from '../utils/fsHandle.js';
 
 let captureData = null;
 
@@ -26,19 +27,38 @@ async function init() {
 document.getElementById('save-btn').addEventListener('click', async () => {
   if (!captureData) return;
 
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'SAVING...';
+
   const tags = document.getElementById('tags-input').value
     .split(',')
     .map(t => t.trim())
     .filter(Boolean);
 
+  const title = document.getElementById('page-title').value || captureData.title;
+
   await saveEntry({
     url: captureData.url,
-    title: document.getElementById('page-title').value || captureData.title,
+    title,
     screenshot: captureData.screenshot,
     timestamp: captureData.timestamp,
     note: document.getElementById('note-input').value,
     tags
   });
+
+  // Best-effort write to the picked folder (if one was set via Browse).
+  // Failure here never blocks the library save above — disk export
+  // is a bonus, not a requirement.
+  const diskResult = await writeScreenshotFile(
+    captureData.screenshot,
+    title,
+    captureData.timestamp
+  );
+
+  if (!diskResult.success && diskResult.reason !== 'no-folder-set') {
+    console.warn('NexusMark: screenshot not written to disk —', diskResult.reason);
+  }
 
   window.close();
 });
