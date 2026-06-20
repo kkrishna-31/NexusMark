@@ -7,7 +7,7 @@
 **A minimal, keyboard-first Chrome extension for capturing and annotating webpage screenshots.**
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-4a9eff?style=flat-square&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
-[![Version](https://img.shields.io/badge/version-2.0.0-cba6f7?style=flat-square)](https://github.com/kkrishna-31/nexusmark/releases)
+[![Version](https://img.shields.io/badge/version-2.1.0-cba6f7?style=flat-square)](https://github.com/kkrishna-31/nexusmark/releases)
 [![License](https://img.shields.io/badge/license-MIT-a6e3a1?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f9e2af?style=flat-square)](CONTRIBUTING.md)
 
@@ -34,7 +34,8 @@
 | **Library** | Browse all saved captures in a searchable card grid |
 | **Screenshot Preview** | Click any card thumbnail in the library to open a full-resolution lightbox |
 | **Search** | Filter entries instantly by title, URL, note, or tags |
-| **Save Folder** | Set a custom subfolder name within your Downloads directory |
+| **Save Folder (Browse)** | Pick a real folder on disk — every capture is written there as a `.png`, alongside the in-library entry |
+| **Recycle Bin** | Deleting an entry moves it to Recycle instead of erasing it — restore it anytime, or empty the bin permanently |
 | **Local Storage** | Everything is stored on-device via `chrome.storage.local` — no servers, no accounts |
 
 ---
@@ -52,7 +53,7 @@ To change the shortcut: open the extension popup → click **SET HOTKEY**, or go
 ## ⬇️ Direct Download
 
 <a href="https://github.com/kkrishna-31/NexusMark/releases/latest">
-  <img src="https://img.shields.io/badge/Download-NexusMark%20v2.0.0-cba6f7?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Download NexusMark">
+  <img src="https://img.shields.io/badge/Download-NexusMark%20v2.1.0-cba6f7?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Download NexusMark">
 </a>
 
 > **No build step needed.** Just download, unzip, and load in Chrome.
@@ -93,16 +94,17 @@ nexusmark/
 │   ├── popup.js            # Home screen logic — capture, hotkey, folder, library
 │   ├── popup.css           # Shared styles for popup and capture views
 │   ├── capture.html        # Annotate & save screen (opened after capture)
-│   └── capture.js          # Capture view logic — save entry, discard
+│   └── capture.js          # Capture view logic — save entry, write to disk, discard
 │
 ├── library/
-│   ├── library.html        # Library full-page view
-│   ├── library.js          # Render grid, search, preview modal, delete
+│   ├── library.html        # Library full-page view + recycle bin modal
+│   ├── library.js          # Render grid, search, preview modal, soft-delete, recycle bin
 │   └── library.css         # Catppuccin-themed library styles
 │
 ├── utils/
 │   ├── capture.js          # captureTab() — screenshots active tab
-│   └── storage.js          # getAllEntries / saveEntry / deleteEntry
+│   ├── storage.js          # getAllEntries / saveEntry / deleteEntry / restoreEntry / recycle bin
+│   └── fsHandle.js         # Folder picker, permission handling, writes screenshots to disk
 │
 └── icons/
     ├── icon16.png
@@ -117,8 +119,9 @@ nexusmark/
 NexusMark uses a custom dark UI theme inspired by **Catppuccin Mocha** and **VS Code Dark+**.
 
 - **Font:** [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono) (labels/mono) + [Inter](https://fonts.google.com/specimen/Inter) (body)
-- **Background:** `#1e1e2e` warm deep purple
+- **Background:** `#1e1e2e` warm deep purple (library) / `#080c10` near-black (popup)
 - **Accent:** Lavender `#cba6f7` / Blue `#89b4fa` / Teal `#94e2d5` / Yellow `#f9e2af`
+- Popup text uses a white-based scale (`#ffffff` → `rgba(255,255,255,0.45)`) for hierarchy without sacrificing contrast
 - All text colors are chosen for WCAG AA contrast on dark backgrounds
 
 ---
@@ -131,10 +134,10 @@ NexusMark uses a custom dark UI theme inspired by **Catppuccin Mocha** and **VS 
 | `tabs` | Read tab URL and title metadata |
 | `scripting` | Inject capture logic into the active page when needed |
 | `storage` | Save and retrieve all entries locally via `chrome.storage.local` |
-| `downloads` | Reserved for future export/download features |
+| `downloads` | Reserved for future export features (current disk-write uses the File System Access API instead, not this permission) |
 | `host_permissions: <all_urls>` | Required to capture screenshots on any website |
 
-NexusMark **does not** make any network requests. All data lives in your browser's local storage.
+NexusMark **does not** make any network requests. All data lives in your browser's local storage, and any screenshots written to disk go only to the folder you explicitly pick — nowhere else.
 
 ---
 
@@ -142,9 +145,11 @@ NexusMark **does not** make any network requests. All data lives in your browser
 
 - **Chrome Extension Manifest V3**
 - Vanilla JavaScript (ES Modules) — no frameworks, no build step
-- `chrome.storage.local` for persistence
+- `chrome.storage.local` for entry persistence
 - `chrome.tabs.captureVisibleTab` for screenshots
 - `chrome.commands` API for keyboard shortcut
+- **File System Access API** (`showDirectoryPicker`, `createWritable`) for real on-disk screenshot export
+- IndexedDB for persisting the picked folder handle across sessions
 - Pure CSS with custom properties
 
 ---
@@ -153,9 +158,9 @@ NexusMark **does not** make any network requests. All data lives in your browser
 
 - [ ] Export library as JSON backup
 - [ ] Import / restore from backup
-- [ ] Download individual screenshots as PNG
 - [ ] Sort library by date / title / tags
 - [ ] Tag filter sidebar in library
+- [ ] Auto-purge recycle bin after N days
 - [ ] Firefox support (MV3 compatible)
 
 ---
@@ -181,6 +186,6 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-Made with focus and dark themes &nbsp;·&nbsp; NexusMark v1.1.0
+Made with focus and dark themes &nbsp;·&nbsp; NexusMark v2.1.0
 
 </div>
